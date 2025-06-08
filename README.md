@@ -1,137 +1,135 @@
-<<<<<<< HEAD
-# Spring Boot based Java web application
- 
-This is a simple Sprint Boot based Java application that can be built using Maven. Sprint Boot dependencies are handled using the pom.xml 
-at the root directory of the repository.
 
-This is a MVC architecture based application where controller returns a page with title and message attributes to the view.
+# 🚀 Spring Boot App Deployment with ArgoCD on Minikube
 
-## Execute the application locally and access it using your browser
+## 📦 Project Overview
 
-Checkout the repo and move to the directory
+This project demonstrates how to deploy a Spring Boot application on a Kubernetes cluster using ArgoCD for GitOps-based continuous delivery. It runs locally via Minikube.
 
-```
-git clone https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero/java-maven-sonar-argocd-helm-k8s/sprint-boot-app
-cd java-maven-sonar-argocd-helm-k8s/sprint-boot-app
-```
+---
 
-Execute the Maven targets to generate the artifacts
+## ⚙️ Prerequisites
 
-```
-mvn clean package
-```
+Make sure the following tools are installed:
 
-The above maven target stroes the artifacts to the `target` directory. You can either execute the artifact on your local machine
-(or) run it as a Docker container.
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
+- [Docker](https://docs.docker.com/get-docker/)
+- [ArgoCD CLI (optional)](https://argo-cd.readthedocs.io/en/stable/cli_installation/)
 
-** Note: To avoid issues with local setup, Java versions and other dependencies, I would recommend the docker way. **
+---
 
+## 🧱 Minikube Cluster Setup
 
-### Execute locally (Java 11 needed) and access the application on http://localhost:8080
+Start a Minikube cluster with appropriate resources and a working CNI:
 
-```
-java -jar target/spring-boot-web.jar
+```bash
+minikube start --cpus=4 --memory=8192 --addons=ingress
 ```
 
-### The Docker way
+> 🔥 **Do not specify `--cni` manually unless you know what you're doing.** The default setup is usually enough.
 
-Build the Docker Image
+---
 
-```
-docker build -t ultimate-cicd-pipeline:v1 .
-```
+## 🐳 Build and Push Docker Image
 
-```
-docker run -d -p 8010:8080 -t ultimate-cicd-pipeline:v1
-```
+Build your Spring Boot app Docker image and load it into Minikube:
 
-Hurray !! Access the application on `http://<ip-address>:8010`
-
-
-## Next Steps
-
-### Configure a Sonar Server locally
-
-```
-System Requirements
-Java 17+ (Oracle JDK, OpenJDK, or AdoptOpenJDK)
-Hardware Recommendations:
-   Minimum 2 GB RAM
-   2 CPU cores
-sudo apt update && sudo apt install unzip -y
-adduser sonarqube
-wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.4.1.88267.zip
-unzip *
-chown -R sonarqube:sonarqube /opt/sonarqube
-chmod -R 775 /opt/sonarqube
-cd /opt/sonarqube/bin/linux-x86-64
-./sonar.sh start
+```bash
+eval $(minikube docker-env)
+docker build -t spring-boot-app:latest .
 ```
 
-Hurray !! Now you can access the `SonarQube Server` on `http://<ip-address>:9000` 
+> This allows you to use local images inside Minikube without pushing to a remote registry.
 
+---
 
-=======
-# Jenkins Pipeline for Java based application using Maven, SonarQube, Argo CD, Helm and Kubernetes
+## ☸️ Deploy to Kubernetes
 
-![Screenshot 2023-03-28 at 9 38 09 PM](https://user-images.githubusercontent.com/43399466/228301952-abc02ca2-9942-4a67-8293-f76647b6f9d8.png)
+Apply your Kubernetes manifests:
 
+```bash
+kubectl apply -f k8s/
+```
 
-Here are the step-by-step details to set up an end-to-end Jenkins pipeline for a Java application using SonarQube, Argo CD, Helm, and Kubernetes:
+Make sure the pod is running:
 
-Prerequisites:
+```bash
+kubectl get pods
+```
 
-   -  Java application code hosted on a Git repository
-   -   Jenkins server
-   -  Kubernetes cluster
-   -  Helm package manager
-   -  Argo CD
+---
 
-Steps:
+## 🚀 Install and Access ArgoCD
 
-    1. Install the necessary Jenkins plugins:
-       1.1 Git plugin
-       1.2 Maven Integration plugin
-       1.3 Pipeline plugin
-       1.4 Kubernetes Continuous Deploy plugin
+### Step 1: Install ArgoCD
 
-    2. Create a new Jenkins pipeline:
-       2.1 In Jenkins, create a new pipeline job and configure it with the Git repository URL for the Java application.
-       2.2 Add a Jenkinsfile to the Git repository to define the pipeline stages.
+```bash
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
 
-    3. Define the pipeline stages:
-        Stage 1: Checkout the source code from Git.
-        Stage 2: Build the Java application using Maven.
-        Stage 3: Run unit tests using JUnit and Mockito.
-        Stage 4: Run SonarQube analysis to check the code quality.
-        Stage 5: Package the application into a JAR file.
-        Stage 6: Deploy the application to a test environment using Helm.
-        Stage 7: Run user acceptance tests on the deployed application.
-        Stage 8: Promote the application to a production environment using Argo CD.
+### Step 2: Expose ArgoCD Server
 
-    4. Configure Jenkins pipeline stages:
-        Stage 1: Use the Git plugin to check out the source code from the Git repository.
-        Stage 2: Use the Maven Integration plugin to build the Java application.
-        Stage 3: Use the JUnit and Mockito plugins to run unit tests.
-        Stage 4: Use the SonarQube plugin to analyze the code quality of the Java application.
-        Stage 5: Use the Maven Integration plugin to package the application into a JAR file.
-        Stage 6: Use the Kubernetes Continuous Deploy plugin to deploy the application to a test environment using Helm.
-        Stage 7: Use a testing framework like Selenium to run user acceptance tests on the deployed application.
-        Stage 8: Use Argo CD to promote the application to a production environment.
+Port-forward ArgoCD server for browser access:
 
-    5. Set up Argo CD:
-        Install Argo CD on the Kubernetes cluster.
-        Set up a Git repository for Argo CD to track the changes in the Helm charts and Kubernetes manifests.
-        Create a Helm chart for the Java application that includes the Kubernetes manifests and Helm values.
-        Add the Helm chart to the Git repository that Argo CD is tracking.
+```bash
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+```
 
-    6. Configure Jenkins pipeline to integrate with Argo CD:
-       6.1 Add the Argo CD API token to Jenkins credentials.
-       6.2 Update the Jenkins pipeline to include the Argo CD deployment stage.
+Access it in your browser:  
+👉 https://localhost:8080
 
-    7. Run the Jenkins pipeline:
-       7.1 Trigger the Jenkins pipeline to start the CI/CD process for the Java application.
-       7.2 Monitor the pipeline stages and fix any issues that arise.
+---
 
-This end-to-end Jenkins pipeline will automate the entire CI/CD process for a Java application, from code checkout to production deployment, using popular tools like SonarQube, Argo CD, Helm, and Kubernetes.
->>>>>>> 91d09e3 (Add spring-boot-app as a submodule)
+## 🔐 Login to ArgoCD
+
+Fetch initial admin password:
+
+```bash
+kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d
+```
+
+Login with:
+- **Username**: `admin`
+- **Password**: *<output from above command>*
+
+---
+
+## 🌿 Connect and Sync Spring Boot App in ArgoCD
+
+1. Click **"New App"**
+2. Fill in:
+   - **Application Name**: `spring-boot-app`
+   - **Repo URL**: your GitHub repo
+   - **Path**: path to Kubernetes manifests
+   - **Cluster**: `https://kubernetes.default.svc`
+   - **Namespace**: `default`
+3. Click **Create**, then **Sync**
+
+---
+
+## ✅ Verify Deployment
+
+Check app is running:
+
+```bash
+kubectl get pods
+kubectl get svc
+```
+
+If service is `ClusterIP`, expose it:
+
+```bash
+kubectl port-forward svc/spring-boot-app 8081:8080
+```
+
+Then open your browser:  
+👉 http://localhost:8081
+
+---
+
+## 📎 Additional Notes
+
+- If you encounter `image can't be pulled` errors:
+  - Make sure you're using local image (`eval $(minikube docker-env)` before `docker build`)
+  - Or push to Docker Hub and use correct `imagePullPolicy`
