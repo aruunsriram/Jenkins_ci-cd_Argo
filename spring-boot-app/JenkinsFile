@@ -9,7 +9,7 @@ pipeline {
   environment {
     IMAGE_NAME = 'aruunsriram45/ci-cd-image'
     SONAR_URL = 'http://13.204.72.36:9000'
-    GIT_REPO_NAME = 'CI-CD-Jenkins-Argo'
+    GIT_REPO_NAME = 'jenkins_ci-cd_Argo'
     GIT_USER_NAME = 'aruunsriram'
     GIT_REPO_URL = "https://github.com/${GIT_USER_NAME}/${GIT_REPO_NAME}.git"
   }
