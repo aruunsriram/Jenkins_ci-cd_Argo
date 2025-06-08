@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title th:text="${title}">CI/CD using Java-maven</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOE NV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+
+    <!-- Custom CSS with cache busting -->
+    <link rel="stylesheet" th:href="@{/css/main.css(id=${timestamp})}" />
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" role="navigation">
+    <a class="navbar-brand" href="#" th:text="${title}">Ultimate CI/CD Pipeline using Java-maven</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" 
+            aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+              <a class="nav-link" href="#" th:text="'Home'">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <!-- Add more nav links here if needed -->
+      </ul>
+    </div>
+</nav>
+
+<main role="main" class="container" style="padding-top: 80px;">
+    <div class="starter-template text-center">
+        <h1 th:text="${title}">Default title.</h1>
+        <p class="lead" th:text="${msg}">Default text.</p>
+    </div>
+</main>
+
+<!-- Bootstrap and dependencies -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" 
+        integrity="sha384-J6qa4849blE2+poTj/s 2mPxzUY6auU6Knp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" 
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldf/N3T8PZr+mbV0p3Yx"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" 
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnju BMG5i8fjA4h4JJr59b6EGGoI1aFkw7cmDA6j"
+        crossorigin="anonymous"></script>
+
+<!-- Custom JS -->
+<script th:src="@{/js/main.js}"></script>
+
+</body>
+</html>
