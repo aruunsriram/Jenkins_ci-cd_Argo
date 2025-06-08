@@ -9,7 +9,7 @@ pipeline {
     stage('Checkout') {
       steps {
         sh 'echo passed'
-        // git branch: 'main', url: 'https://github.com/aruunsriram/CI-CD-Jenkins-Argo.git'
+        // git branch: 'main', url: 'https://github.com/aruunsriram/Jenkins_ci-cd_Argo.git'
       }
     }
     stage('Build and Test') {
@@ -47,7 +47,7 @@ pipeline {
     }
     stage('Update Deployment File') {
         environment {
-            GIT_REPO_NAME = "CI-CD-Jenkins-Argo"
+            GIT_REPO_NAME = "Jenkins_ci-cd_Argo"
             GIT_USER_NAME = "aruunsriram"
         }
         steps {
