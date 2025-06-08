@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: spring-boot-app
-        image: aruunsriram45/aruun-docker-agent:replaceImageTag
+        image: aruunsriram45/aruun-docker-agent:3
         ports:
         - containerPort: 8080
