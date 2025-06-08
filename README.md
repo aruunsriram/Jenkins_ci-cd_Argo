@@ -20,7 +20,7 @@ This project demonstrates a complete DevOps pipeline for a **Spring Boot Applica
 ├── spring-boot-app
 │   ├── Dockerfile
 │   ├── Jenkinsfile
-│   ├── k8s-manifests
+│   ├── spring-boot-app-manifests
 │   │   ├── deployment.yaml
 │   │   ├── service.yaml
 │   └── src/...
